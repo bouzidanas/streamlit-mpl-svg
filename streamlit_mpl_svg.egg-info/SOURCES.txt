@@ -1,0 +1,13 @@
+LICENSE.txt
+README.md
+setup.py
+streamlit_mpl_svg/__init__.py
+streamlit_mpl_svg/bar_chart_test.py
+streamlit_mpl_svg/bar_group_chart_test.py
+streamlit_mpl_svg/demo.py
+streamlit_mpl_svg/line_plot_test.py
+streamlit_mpl_svg.egg-info/PKG-INFO
+streamlit_mpl_svg.egg-info/SOURCES.txt
+streamlit_mpl_svg.egg-info/dependency_links.txt
+streamlit_mpl_svg.egg-info/requires.txt
+streamlit_mpl_svg.egg-info/top_level.txt
