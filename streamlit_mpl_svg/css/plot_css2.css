@@ -1,0 +1,377 @@
+/* Matplotlib SVG */ 
+svg.matplotlib-svg {
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+/* Matplotlib SVG background */
+.figure > .patch:first-child > path {
+    fill: #123413;
+}
+
+.figure.patch.path-0 {
+    fill: #ffffff;
+}
+
+/* Plot area background */
+.figure > .axes > .patch:first-child > path {
+    fill: #999999;
+}
+
+.figure.axes.patch.path-1 {
+    fill: #ffffff;
+}
+
+
+.figure.axes.line2d {
+    transition: all 0.2s ease-in-out;
+}
+
+.figure.axes.line2d {
+    fill: none;
+    stroke: #1f77b4; 
+    stroke-width: 1.5; 
+    stroke-linecap: square;
+}
+
+.figure.axes.patch {
+    fill: none;
+    stroke: #000000; 
+    stroke-width: 0.8; 
+    stroke-linejoin: miter; 
+    stroke-linecap: square;
+}
+
+.figure.axes.patch.path-3 {
+}
+
+.figure.axes.patch.path-4 {
+}
+
+.figure.axes.patch.path-5 {
+}
+
+.figure.axes.patch.path-6 {
+}
+
+/* All axes tickmarks and text */
+.copy {
+    fill: white;
+    stroke: white;
+    stroke-width: 1px;
+}
+
+/* All x-axes tickmarks and text */
+.xtick .copy {
+    fill: green;
+    stroke: green;
+    stroke-width: 3px;
+}
+
+/* All x-axes text */
+.xtick .text .copy {
+    fill: blue;
+    stroke: blue;
+    stroke-width: 1px;
+}
+
+/* All y-axes tickmarks and text */
+.ytick .copy {
+    fill: green;
+    stroke: green;
+    stroke-width: 1px;
+}
+
+/* All y-axes text */
+.ytick .text .copy {
+    fill: red;
+}
+
+.copy-0 {
+    fill: yellow;
+    stroke: yellow;
+}
+
+.copy-1 {
+    
+}
+
+.copy-2 {
+    
+}
+
+.copy-3 {
+
+}
+
+.copy-4 {
+
+}
+
+.copy-5 {
+
+}
+
+.copy-6 {
+
+}
+
+.copy-7 {
+    
+}
+
+.copy-8 {
+    
+}
+
+.copy-9 {
+
+}
+
+.copy-10 {
+
+}
+
+.copy-11 {
+
+}
+
+.copy-12 {
+    
+}
+
+.copy-13 {
+
+}
+
+.copy-14 {
+
+}
+
+.copy-15 {
+
+}
+
+.copy-16 {
+
+}
+
+.copy-17 {
+    
+}
+
+.copy-18 {
+
+}
+
+.copy-19 {
+
+}
+
+.copy-20 {
+
+}
+
+.copy-21 {
+
+}
+
+.copy-22 {
+    
+}
+
+.copy-23 {
+
+}
+
+.copy-24 {
+
+}
+
+.copy-25 {
+
+}
+
+.copy-26 {
+
+}
+
+.copy-27 {
+
+}
+
+.copy-28 {
+    
+}
+
+.copy-29 {
+
+}
+
+.copy-30 {
+
+}
+
+.copy-31 {
+
+}
+
+.copy-32 {
+
+}
+
+.copy-33 {
+    
+}
+
+.copy-34 {
+
+}
+
+.copy-35 {
+
+}
+
+.copy-36 {
+
+}
+
+.copy-37 {
+    
+}
+
+.copy-38 {
+
+}
+
+.copy-39 {
+
+}
+
+.copy-40 {
+
+}
+
+.copy-41 {
+    
+}
+
+.copy-42 {
+
+}
+
+.copy-43 {
+
+}
+
+.copy-44 {
+
+}
+
+.copy-45 {
+    
+}
+
+.copy-46 {
+
+}
+
+.copy-47 {
+    
+}
+
+.copy-48 {
+
+}
+
+.copy-49 {
+
+}
+
+.copy-50 {
+    
+}
+
+.copy-51 {
+
+}
+
+.copy-52 {
+
+}
+
+.copy-53 {
+    
+}
+
+.copy-54 {
+
+}
+
+.copy-55 {
+}
+
+.copy-56 {
+    
+}
+
+.copy-57 {
+
+}
+
+.copy-58 {
+
+}
+
+.copy-59 {
+
+}
+
+.def-path-0 {
+
+}
+
+.def-path-1 {
+
+}
+
+.def-path-2 {
+
+}
+
+.def-path-3 {
+
+}
+
+.def-path-4 {
+
+}
+
+.def-path-5 {
+
+}
+
+.def-path-6 {
+
+}
+
+.def-path-7 {
+    
+}
+
+.def-path-8 {
+
+}
+
+.def-path-9 {
+
+}
+
+.def-path-10 {
+
+}
+
+.def-clippath-11 {
+
+}

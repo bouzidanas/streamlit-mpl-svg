@@ -1,0 +1,289 @@
+/* ---------------------------------------------------- */
+/* SVG area and plot area */
+
+/* Matplotlib SVG */ 
+svg.matplotlib-svg {
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+/* Matplotlib SVG background */
+.figure > .patch:first-child > path {
+    fill: #ffffff00;
+}
+
+/* Plot area background */
+.figure > .axes > .patch:first-child > path.figure.axes.patch {
+    fill: #ffffff00;
+}
+
+/* Plot area border top */
+g.figure > g.axes > g.patch:nth-last-child(3) > path.figure.axes.patch {
+	stroke: #aa878700;
+}
+
+.figure.patch.path-0 {
+	fill: #ffffff;
+}
+
+.figure.axes.patch.path-1 {
+	fill: #ffffff;
+}
+
+.figure.axes.line2d.path-2 {
+	fill: none;
+	stroke: #249ef5;
+	stroke-width: 2;
+	stroke-linecap: round;
+}
+
+.figure.axes.line2d.path-3 {
+	fill: none;
+	stroke: #fbff0e;
+	stroke-width: 2;
+	stroke-linecap: round;
+}
+
+/* Plot area border (remove contents if 
+you want to style individual sides)*/
+.axes > .patch > .figure.axes.patch {
+    /* fill: none;
+	stroke: #ffffff;
+	stroke-width: 2;
+	stroke-linejoin: miter;
+	stroke-linecap: round; */
+}
+
+.figure.axes.patch.path-4 {
+	fill: none;
+	stroke: #000000;
+	stroke-width: 0.8;
+	stroke-linejoin: miter;
+	stroke-linecap: square;
+}
+
+.figure.axes.patch.path-5 {
+	fill: none;
+	stroke: #000000;
+	stroke-width: 0.8;
+	stroke-linejoin: miter;
+	stroke-linecap: square;
+}
+
+.figure.axes.patch.path-6 {
+	fill: none;
+	stroke: #000000;
+	stroke-width: 0.8;
+	stroke-linejoin: miter;
+	stroke-linecap: square;
+}
+
+.figure.axes.patch.path-7 {
+	fill: none;
+	stroke: #000000;
+	stroke-width: 0.8;
+	stroke-linejoin: miter;
+	stroke-linecap: square;
+}
+
+/* All axes tickmarks and text */
+.copy {
+	fill: white;
+	stroke: white;
+	stroke-width: 1px;
+}
+
+/* Override all axes tickmarks and text */
+.axes .matplotlib-axis .xtick .copy, .axes .matplotlib-axis .ytick .copy {
+	fill: #ffffff;
+	stroke: #ffffff;
+	stroke-width: 2px;
+}
+
+/* All x-axes tickmarks and text */
+.xtick .copy {
+	stroke: red;
+	stroke-width: 1px;
+}
+
+/* All x-axes text */
+.xtick .text .copy {
+	fill: red;
+}
+
+/* All y-axes tickmarks and text */
+.ytick .copy {
+	stroke: red;
+	stroke-width: 1px;
+}
+
+/* All y-axes text */
+.ytick .text .copy {
+	fill: red;
+}
+
+
+/* ---------------------------------------------------- */
+/* Individual axis elements (ticks and text characters) */
+
+.copy-0 {
+	stroke: #000000;
+	stroke-width: 0.8;
+}
+
+.copy-1 {
+}
+
+.copy-2 {
+	stroke: #000000;
+	stroke-width: 0.8;
+}
+
+.copy-3 {
+}
+
+.copy-4 {
+}
+
+.copy-5 {
+	stroke: #000000;
+	stroke-width: 0.8;
+}
+
+.copy-6 {
+}
+
+.copy-7 {
+}
+
+.copy-8 {
+	stroke: #000000;
+	stroke-width: 0.8;
+}
+
+.copy-9 {
+}
+
+.copy-10 {
+}
+
+.copy-11 {
+	stroke: #000000;
+	stroke-width: 0.8;
+}
+
+.copy-12 {
+}
+
+.copy-13 {
+}
+
+.copy-14 {
+	stroke: #000000;
+	stroke-width: 0.8;
+}
+
+.copy-15 {
+}
+
+.copy-16 {
+}
+
+.copy-17 {
+}
+
+.copy-18 {
+	stroke: #000000;
+	stroke-width: 0.8;
+}
+
+.copy-19 {
+}
+
+.copy-20 {
+}
+
+.copy-21 {
+}
+
+.copy-22 {
+	stroke: #000000;
+	stroke-width: 0.8;
+}
+
+.copy-23 {
+}
+
+.copy-24 {
+}
+
+.copy-25 {
+}
+
+.copy-26 {
+	stroke: #000000;
+	stroke-width: 0.8;
+}
+
+.copy-27 {
+}
+
+.copy-28 {
+	stroke: #000000;
+	stroke-width: 0.8;
+}
+
+.copy-29 {
+}
+
+.copy-30 {
+}
+
+.copy-31 {
+	stroke: #000000;
+	stroke-width: 0.8;
+}
+
+.copy-32 {
+}
+
+.copy-33 {
+}
+
+/* ---------------------------------------------------- */
+/* Original paths of copies */
+
+.def-path-0 {
+	/*stroke: #000000;
+	stroke-width: 0.8;*/
+}
+
+.def-path-1 {
+}
+
+.def-path-2 {
+}
+
+.def-path-3 {
+}
+
+.def-path-4 {
+}
+
+.def-path-5 {
+}
+
+.def-path-6 {
+}
+
+.def-path-7 {
+	/*stroke: #000000;
+	stroke-width: 0.8;*/
+}
+
+.def-path-8 {
+}
+
+.def-clippath-9 {
+}
