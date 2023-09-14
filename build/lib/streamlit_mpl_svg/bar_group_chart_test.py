@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import streamlit as st
 import numpy as np
-from mpl_svg import svg_plot
+from __init__ import svg_plot
 
 value = st.slider("Slider", 0.0, 0.5, 0.01)
 
