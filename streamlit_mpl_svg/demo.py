@@ -86,15 +86,53 @@ with st.sidebar:
 st.write("# Streamlit Matplotlib SVG Demo")
 
 st.write("## Bar Chart")
-
+st.code('''# Store previously generated SVG in session state
+if "svgb" not in st.session_state:
+    st.session_state["svgb"] = ""
+        
+# SVG plot container
 bar_chart_container = st.container()
+# Slider to control some of the bar heights
 value = st.slider("Multiplier", 0.1, 1.0, 1.0)
 
-# if on and plt.rcParams["font.family"][0] == "Source Code Pro":
-# # --------- Matplotlib code ---------
-#     fig, ax = plt.subplots()
-# else:
-#     fig, ax = plt.subplots()
+# --------- Matplotlib code ---------
+fig, ax = plt.subplots()
+fruits = ['apple', 'blueberry', 'cherry', 'orange']
+counts = [30, 100*value, 30*value, 55]
+bar_labels = ['red', 'blue', '_red', 'orange']
+bar_colors = ['tab:red', 'tab:blue', 'tab:red', 'tab:orange']
+
+ax.set_ylim(0, 100)
+
+ax.bar(fruits, counts, label=bar_labels, color=bar_colors)
+
+ax.set_ylabel('fruit supply')
+ax.set_title('Fruit supply by kind and color', x=0.5, y=1.05)
+ax.legend(title='Fruit color')
+# -----------------------------------
+
+transitions = get_transitions(fig)
+formatted_plot = svg_plot(fig, id="bar", styling=styling, transition_to=transitions)
+
+# We want to use the svg in its previous state to transition inner elements to their new states
+if st.session_state["svg"] == "":
+    last_svg = formatted_plot["svg"]
+else:
+    last_svg = st.session_state["svg"]
+
+# Update the svg in the session state
+st.session_state["svg"] = formatted_plot["svg"]
+
+# Construct the html markup from the svg and css
+current_css = formatted_plot["css"]                           # contains current css transitions and styling
+new_html = "<style>" + current_css + "</style>" + last_svg    # combine the css and LAST svg
+
+# Display the SVG (html markup) in the positioned container
+with bar_chart_container:
+    st.markdown(new_html, unsafe_allow_html=True)
+        ''')
+bar_chart_container = st.container()
+value = st.slider("Multiplier", 0.1, 1.0, 1.0)
 
 # --------- Matplotlib code ---------
 fig, ax = plt.subplots()
