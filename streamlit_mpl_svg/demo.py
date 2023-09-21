@@ -127,7 +127,7 @@ st.session_state["svg"] = formatted_plot["svg"]
 
 # Construct the html markup from the svg and css
 current_css = formatted_plot["css"]                           # contains current css transitions and styling
-new_html = "<style>" + current_css + "</style>" + last_svg    # combine the css and LAST svg
+new_html = "<style>" + current_css + "</style>" + last_svg    # combine the current css and LAST svg
 
 # Display the SVG (html markup) in the positioned container
 with bar_chart_container:
