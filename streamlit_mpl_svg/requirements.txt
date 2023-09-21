@@ -1,4 +1,5 @@
 matplotlib
+lxml
 beautifulsoup4
 streamlit_mpl_svg
 numpy

@@ -2,7 +2,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import streamlit as st
 import numpy as np
-from __init__ import *
+from streamlit_mpl_svg import *
 
 st.set_page_config(page_title="Streamlit Matplotlib SVG Demo", page_icon=":bar_chart:")
 

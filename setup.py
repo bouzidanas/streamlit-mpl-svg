@@ -6,7 +6,7 @@ long_description = (this_directory / "PROJECT.md").read_text()
 
 setup(
     name='streamlit-mpl-svg',
-    version='2.0.0',
+    version='2.0.1',
     author='Anas Bouzid',
     author_email='anasbouzid@gmail.com',
     description='Reformat Matplotlib SVGs for easier access in Streamlit and customzation with CSS',
@@ -24,5 +24,6 @@ setup(
         "streamlit >= 0.63",
         "matplotlib >= 3.2.1",
         "beautifulsoup4 >= 4.9.0",
+        "lxml >= 4.5.0",
     ],
 )
