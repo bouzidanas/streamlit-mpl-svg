@@ -97,7 +97,7 @@ bar_chart_container = st.container()
 # Slider to control some of the bar heights
 value = st.slider("Multiplier", 0.1, 1.0, 1.0)
 
-# --------- Matplotlib code ---------
+# --------------- Matplotlib code ---------------
 fig, ax = plt.subplots()
 fruits = ['apple', 'blueberry', 'cherry', 'orange']
 counts = [30, 100*value, 30*value, 55]
@@ -111,7 +111,7 @@ ax.bar(fruits, counts, label=bar_labels, color=bar_colors)
 ax.set_ylabel('fruit supply')
 ax.set_title('Fruit supply by kind and color', x=0.5, y=1.05)
 ax.legend(title='Fruit color')
-# -----------------------------------
+# -----------------------------------------------
 
 transitions = get_transitions(fig)
 formatted_plot = svg_plot(fig, id="bar", styling=styling, transition_to=transitions)
