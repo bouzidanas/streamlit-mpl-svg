@@ -64,8 +64,10 @@ import streamlit as st
 import numpy as np
 from streamlit_mpl_svg import svg_plot
 
+# Slider for user to change bar height
 value = st.slider("Slider", 0.1, 1.0, 0.1)
 
+# --------------- Matplotlib code ---------------
 figure, axes = plt.subplots()
 x = np.arange(0,4,1)
 y = 25*x + 25
@@ -78,6 +80,7 @@ axes.plot(x, y, color="red", linewidth=5)
 
 axes.set_ylabel('fruit supply')
 axes.set_title('Fruit supply by kind and color')
+# -----------------------------------------------
 
 styling = {
     "background": "#ffffff00",
@@ -89,8 +92,10 @@ styling = {
     "y-axis-label-color": "skyblue"
 }
 
+# Get reformatted SVG
 formatted_plot = svg_plot(figure, styling=styling)
 
+# Display SVG in the Streamlit app
 st.markdown(formatted_plot["html"], unsafe_allow_html=True)
 ```
 
