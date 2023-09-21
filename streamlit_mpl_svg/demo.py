@@ -86,7 +86,9 @@ with st.sidebar:
 st.write("# Streamlit Matplotlib SVG Demo")
 
 st.write("## Bar Chart")
-st.code('''# Store previously generated SVG in session state
+
+with st.expander("Code"):
+    st.code('''# Store previously generated SVG in session state
 if "svgb" not in st.session_state:
     st.session_state["svgb"] = ""
         
