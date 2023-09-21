@@ -1,7 +1,7 @@
 Metadata-Version: 2.1
 Name: streamlit-mpl-svg
-Version: 0.1.1
-Summary: Reformat Matplotlib SVGs for easier access and customzation with CSS
+Version: 2.0.0
+Summary: Reformat Matplotlib SVGs for easier access in Streamlit and customzation with CSS
 Home-page: https://github.com/bouzidanas/streamlit-mpl-svg
 Author: Anas Bouzid
 Author-email: anasbouzid@gmail.com
