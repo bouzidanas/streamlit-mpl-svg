@@ -374,6 +374,11 @@ def svg_plot(fig, id = None, styling = None, transition_to = None, transition="1
     paths = svg_soup.find_all("path")
     path_count = 0
 
+    ## The chunks of code below are in an unusual order because of dependencies.
+    ## TO DO: Clean up by separating the code that alters or adds classes and/or 
+    ## ids (to groups, paths, defs, use, etc) from the code that generates CSS 
+    ## and the code that populates the transition dict.
+
     # Add special classes to paths that are in defs.
     for path in paths:
         if path.parent.name != "defs":
