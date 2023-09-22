@@ -112,7 +112,7 @@ title_css = """/* Plot title */
 """
 axes_css = """
 /* All axes tickmarks and text */
-.matplotlib-axis .copy {
+.axes .matplotlib-axis .copy {
 /*\tfill: white;
 \tstroke: white;
 \tstroke-width: 1px;*/
@@ -120,7 +120,7 @@ axes_css = """
 """
 x_axis_label_css = """
 /* All x-axis text/label */
-.matplotlib-axis .xtick ~ .text .copy {
+.axes .matplotlib-axis .xtick ~ .text .copy {
 /*\tfill: blue;
 \tstroke: blue;
 \tstroke-width: 1px;*/
@@ -128,7 +128,7 @@ x_axis_label_css = """
 """
 x_axis_css ="""
 /* All x-axis tickmarks and tickmark labels */
-.matplotlib-axis .xtick .copy {
+.axes .matplotlib-axis .xtick .copy {
 /*\tfill: green;
 \tstroke: green;
 \tstroke-width: 3px;*/
@@ -136,7 +136,7 @@ x_axis_css ="""
 """
 x_axis_text_css = """
 /* All x-axis tickmark label text */
-.matplotlib-axis .xtick .text .copy {
+.axes .matplotlib-axis .xtick .text .copy {
 /*\tfill: blue;
 \tstroke: blue;
 \tstroke-width: 1px;*/
@@ -144,7 +144,7 @@ x_axis_text_css = """
 """
 y_axis_label_css = """
 /* All y-axis text/label */
-.matplotlib-axis .ytick ~ .text .copy {
+.axes .matplotlib-axis .ytick ~ .text .copy {
 /*\tfill: green;
 \tstroke: green;
 \tstroke-width: 1px;*/
@@ -152,7 +152,7 @@ y_axis_label_css = """
 """
 y_axis_css = """
 /* All y-axis tickmarks and tickmark labels */
-.matplotlib-axis .ytick .copy {
+.axes .matplotlib-axis .ytick .copy {
 /*\tfill: green;
 \tstroke: green;
 \tstroke-width: 1px;*/
@@ -160,14 +160,14 @@ y_axis_css = """
 """
 y_axis_text_css = """
 /* All y-axis tickmark label text */
-.matplotlib-axis .ytick .text .copy {
+.axes .matplotlib-axis .ytick .text .copy {
 /*\tfill: red;*/
 }
 """
 
 override_axes_css = """
 /* Override all axes tickmarks and text */
-.axes .matplotlib-axis .xtick .copy, 
+.figure .axes .matplotlib-axis .xtick .copy, 
 .axes .matplotlib-axis .ytick .copy {
 /*\tfill: #000000;
 \tstroke: #000000;
@@ -179,7 +179,7 @@ override_axes_css = """
 
 plot_line_css = """
 /* All plot lines */
-.axes > path.figure.axes.line2d {
+.figure .axes > path.figure.axes.line2d {
 	fill: none;
 	stroke-width: 1.5;
 	stroke-linecap: round;
@@ -213,6 +213,20 @@ def fig_to_svg(fig):
     f = io.BytesIO()
     fig.savefig(f, format="svg")
     return f.getvalue()
+
+def get_first_parent_with_id(element):
+    """Returns the first parent element with an id"""
+    parent = element.parent
+    while 'id' not in parent.attrs:
+        parent = parent.parent
+    return parent
+
+def get_first_parent_with_class(element):
+    """Returns the first parent element with a class"""
+    parent = element.parent
+    while 'class' not in parent.attrs:
+        parent = parent.parent
+    return parent
 
 def add_class(element, class_name):
     if 'class' in element.attrs:
@@ -315,7 +329,7 @@ def css_builder(styles={}, transition_to={}, transition=""):
                 if "transition" in value:
                     css_plot_area += "\ttransition: " + value["transition"] + ";\n"
                 else:
-                    css_plot_area += "\ttransition: d " + transition + ";\n"
+                    css_plot_area += "\ttransition: all " + transition + ";\n"
                 if "d" in value:
                     css_plot_area += "\td: path('" + value["d"].replace("\n", "") + "');\n"
                 if "x" in value:
@@ -373,38 +387,6 @@ def svg_plot(fig, id = None, styling = None, transition_to = None, transition="1
 
     css_styles += axes_css_styles
 
-    use_count = 0
-    uses_inside = svg_soup.find_all("use")
-
-    for use_element in uses_inside:
-        add_class(use_element, "copy copy-" + str(use_count))
-        if "style" in use_element.attrs:
-            css_styles += '.copy-' + str(use_count) + ' {\n\t' + use_element['style'].replace('; ', ';\n\t') + ';\n}\n\n'
-            use_element['style'] = ""
-        else:
-            css_styles += '.copy-' + str(use_count) + ' {\n}\n\n'
-        use_count += 1
-        
-    path_styles_in_defs ="""/* ---------------------------------------------------- */
-    /* Original paths of copies */\n\n"""
-    class_count = 0
-    def_elem_dict = {}
-    defs_elements = svg_soup.find_all("defs")
-    for defs in defs_elements:
-        elements = defs.find_all()
-        for element in elements:
-            if 'id' in element.attrs:
-                def_elem_dict[element['id']] = element
-
-                if "class" in element.attrs:
-                    element['class'] = "def-" + element.name + "-" + str(class_count)
-                    class_count += 1
-                    if "style" in element.attrs:
-                        path_styles_in_defs += '.' + '.'.join(element['class'].split()) + ' {\n\t/*' + element['style'].replace('; ', ';\n\t') + ';*/\n}\n\n'
-                        element['style'] = ""
-                    else:
-                        path_styles_in_defs += '.' + '.'.join(element['class'].split()) + ' {\n}\n\n'
-
     poly_collections = svg_soup.select(".figure > .axes > .PolyCollection")
     poly_index = 1
     for poly_collection in poly_collections:
@@ -421,7 +403,17 @@ def svg_plot(fig, id = None, styling = None, transition_to = None, transition="1
         else:
             transitions["PolyCollection-" + str(poly_index)] = None
         poly_index += 1
+
+    lines = svg_soup.select(".figure > .axes > .line2d")
+    line_index = 1
+    for line in lines:
+        add_class(line, "transition-line-" + str(line_index))
+        if line.path['d'] != "":
+            transitions["transition-line-" + str(line_index)] = {"select": ".transition-line-" + str(line_index) + " > path", "d": line.path['d']}
+        else:
+            transitions["transition-line-" + str(line_index)] = None
         
+        line_index += 1
 
     border_paths = svg_soup.select(".figure > .axes > .patch")
     border_index = 0
@@ -447,16 +439,6 @@ def svg_plot(fig, id = None, styling = None, transition_to = None, transition="1
             else:
                 transitions["transition-paths-" + str(patch_index)] = None
             patch_index += 1
-
-    line_paths = svg_soup.select(".figure > .axes > .line2d")
-    line_index = 1
-    for line_path in line_paths:
-        add_class(line_path, "transition-line-" + str(line_index))
-        if line_path.path['d'] != "":
-            transitions["transition-line-" + str(line_index)] = {"select": ".transition-line-" + str(line_index) + " > path", "d": line_path.path['d']}
-        else:
-            transitions["transition-line-" + str(line_index)] = None
-        line_index += 1
     
     svg_background_patch = svg_soup.select(".figure > .patch:first-child")
     if len(svg_background_patch) > 0:
@@ -469,6 +451,61 @@ def svg_plot(fig, id = None, styling = None, transition_to = None, transition="1
     plot_area_text = svg_soup.select(".figure > .axes > .text")
     if len(plot_area_text) > 0:
         add_class(plot_area_text[-1], "last")
+
+    use_counts = []
+    use_parent_classes = []
+    uses_inside = svg_soup.find_all("use")
+
+    for use_element in uses_inside:
+        parent_class = get_first_parent_with_class(use_element)['class'].split()[-1]
+        if parent_class not in use_parent_classes:
+            use_parent_classes.append(parent_class)
+            use_counts.append(0)
+        else:
+            use_counts[use_parent_classes.index(parent_class)] += 1
+
+        use_count = use_counts[use_parent_classes.index(parent_class)]
+        add_class(use_element, "copy " + parent_class + " copy-" + str(use_count))
+        if "style" in use_element.attrs:
+            css_styles += '.' + parent_class + '.copy-' + str(use_count) + ' {\n\t' + use_element['style'].replace('; ', ';\n\t') + ';\n}\n\n'
+            use_element['style'] = ""
+        else:
+            css_styles += '.' + parent_class + '.copy-' + str(use_count) + ' {\n}\n\n'
+    
+    line_index = 1
+    for line in lines:       
+        copies = line.select(".copy")
+        for copy_index in range(len(copies)):
+            copy = copies[copy_index]
+            if "x" in copy.attrs and "y" in copy.attrs:
+                transitions["transition-line-" + str(line_index) + "-copy-" + str(copy_index)] = {"select": '.' + '.'.join(copy["class"].split())}
+                if copy['x'] != "":
+                    transitions["transition-line-" + str(line_index) + "-copy-" + str(copy_index)]["x"] = copy['x']
+                if copy['y'] != "":
+                    transitions["transition-line-" + str(line_index) + "-copy-" + str(copy_index)]["y"] = copy['y']
+            else:
+                transitions["transition-line-" + str(line_index) + "-copy-" + str(copy_index)] = None
+        line_index += 1
+    
+    path_styles_in_defs ="""/* ---------------------------------------------------- */
+    /* Original paths of copies */\n\n"""
+    class_count = 0
+    def_elem_dict = {}
+    defs_elements = svg_soup.find_all("defs")
+    for defs in defs_elements:
+        elements = defs.find_all()
+        for element in elements:
+            if 'id' in element.attrs:
+                def_elem_dict[element['id']] = element
+
+                if "class" in element.attrs:
+                    element['class'] = "def-" + element.name + "-" + str(class_count)
+                    class_count += 1
+                    if "style" in element.attrs:
+                        path_styles_in_defs += '.' + '.'.join(element['class'].split()) + ' {\n\t/*' + element['style'].replace('; ', ';\n\t') + ';*/\n}\n\n'
+                        element['style'] = ""
+                    else:
+                        path_styles_in_defs += '.' + '.'.join(element['class'].split()) + ' {\n}\n\n'        
 
     if id is not None:
         svg_element['id'] = id
@@ -513,6 +550,16 @@ def get_transitions(fig):
             transitions["PolyCollection-" + str(poly_index)] = None
         poly_index += 1
 
+    lines = svg_soup.select(".figure > .axes > .line2d")
+    line_index = 1
+    for line in lines:
+        add_class(line, "transition-line-" + str(line_index))
+        if line.path['d'] != "":
+            transitions["transition-line-" + str(line_index)] = {"select": ".transition-line-" + str(line_index) + " > path", "d": line.path['d']}
+        else:
+            transitions["transition-line-" + str(line_index)] = None
+        line_index += 1
+
     border_paths = svg_soup.select(".figure > .axes > .patch")
     if len(border_paths) > 5:
         patch_index = 1
@@ -523,13 +570,33 @@ def get_transitions(fig):
                 transitions["transition-paths-" + str(patch_index)] = None
             patch_index += 1
 
-    line_paths = svg_soup.select(".figure > .axes > .line2d")
-    line_index = 1
-    for line_path in line_paths:
-        if line_path.path['d'] != "":
-            transitions["transition-line-" + str(line_index)] = {"select": ".transition-line-" + str(line_index) + " > path", "d": line_path.path['d']}
+    use_counts = []
+    use_parent_classes = []
+    uses_inside = svg_soup.find_all("use")
+
+    for use_element in uses_inside:
+        parent_class = get_first_parent_with_class(use_element)['class'].split()[-1]
+        if parent_class not in use_parent_classes:
+            use_parent_classes.append(parent_class)
+            use_counts.append(0)
         else:
-            transitions["transition-line-" + str(line_index)] = None
+            use_counts[use_parent_classes.index(parent_class)] += 1
+        use_count = use_counts[use_parent_classes.index(parent_class)]
+        add_class(use_element, "copy " + parent_class + " copy-" + str(use_count))
+
+    line_index = 1
+    for line in lines:       
+        copies = line.select(".copy")
+        for copy_index in range(len(copies)):
+            copy = copies[copy_index]
+            if "x" in copy.attrs and "y" in copy.attrs:
+                transitions["transition-line-" + str(line_index) + "-copy-" + str(copy_index)] = {"select": '.' + '.'.join(copy["class"].split())}
+                if copy['x'] != "":
+                    transitions["transition-line-" + str(line_index) + "-copy-" + str(copy_index)]["x"] = copy['x']
+                if copy['y'] != "":
+                    transitions["transition-line-" + str(line_index) + "-copy-" + str(copy_index)]["y"] = copy['y']
+            else:
+                transitions["transition-line-" + str(line_index) + "-copy-" + str(copy_index)] = None
         line_index += 1
     
     return transitions

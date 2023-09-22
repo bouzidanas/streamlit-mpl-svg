@@ -2,7 +2,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import streamlit as st
 import numpy as np
-from streamlit_mpl_svg import *
+from __init__ import *
 
 st.set_page_config(page_title="Streamlit Matplotlib SVG Demo", page_icon=":bar_chart:")
 
@@ -52,9 +52,17 @@ with st.sidebar:
         x_axis_label_opacity = col11.slider("X axis label opacity", 0.0, 1.0, 1.0)
         x_axis_label_color = col12.color_picker("Color", highlight_color, key="x-axis-label-color")
 
+        col15, col16 = st.columns([5,1])
+        x_axis_tick_label_opacity = col15.slider("X axis tick label opacity", 0.0, 1.0, 1.0)
+        x_axis_tick_label_color = col16.color_picker("Color", highlight_color, key="x-tick-label-color")
+
         col13, col14 = st.columns([5,1])
         y_axis_label_opacity = col13.slider("Y axis label opacity", 0.0, 1.0, 1.0)
         y_axis_label_color = col14.color_picker("Color", highlight_color, key="y-axis-label-color")
+
+        col17, col18 = st.columns([5,1])
+        y_axis_tick_label_opacity = col17.slider("Y axis tick label opacity", 0.0, 1.0, 1.0)
+        y_axis_tick_label_color = col18.color_picker("Color", highlight_color, key="y-tick-label-color")
 
         col9, col10 = st.columns([5,1])
         axes_marks_opacity = col9.slider("Axes marks opacity", 0.0, 1.0, 1.0)
@@ -73,6 +81,8 @@ with st.sidebar:
             "axes-marks-color": axes_marks_color + ("0%x" % int(255*axes_marks_opacity))[-2:],
             "x-axis-label-color": x_axis_label_color + ("0%x" % int(255*x_axis_label_opacity))[-2:],
             "y-axis-label-color": y_axis_label_color + ("0%x" % int(255*y_axis_label_opacity))[-2:],
+            "x-axis-text-color": x_axis_tick_label_color + ("0%x" % int(255*x_axis_tick_label_opacity))[-2:],
+            "y-axis-text-color": y_axis_tick_label_color + ("0%x" % int(255*y_axis_tick_label_opacity))[-2:],
             "plot-area-border-top": "#ffffff00", 
             "plot-area-border-right": "#ffffff00", 
         }
@@ -133,6 +143,7 @@ new_html = "<style>" + current_css + "</style>" + last_svg    # combine the curr
 with bar_chart_container:
     st.markdown(new_html, unsafe_allow_html=True)
         ''')
+
 bar_chart_container = st.container()
 value = st.slider("Multiplier", 0.1, 1.0, 1.0)
 
@@ -177,7 +188,7 @@ with st.expander("Generated CSS template"):
 
 st.write("## Line Plot")
 line_plot_container = st.container()
-line_mp_value = st.slider("Power", 0.0, 2.0, 2.0, key="line-plot")
+line_mp_value = st.slider("Power", 0.0, 3.0, 2.0, key="line-plot")
 
 # --------- Matplotlib code ----------
 x = np.linspace(0, 10, 11)
@@ -233,14 +244,16 @@ w_err = v.std() * np.sqrt(1/len(v) +
                           (v - v.mean())**2 / np.sum((v - v.mean())**2))
 
 fig3, ax3 = plt.subplots()
-ax3.set_ylim(0, 25)
-ax3.plot(v, w_est, '-')
+# ax3.set_ylim(0, 25)
+ax3.plot(v, w_est, 'o-')
 ax3.fill_between(v, w_est - w_err, w_est + w_err, alpha=0.2)
 ax3.plot(v, w, 'o', color='tab:brown')
 # -----------------------------------
 
 mix_transitions = get_transitions(fig3)
 formatted_mix_plot = svg_plot(fig3, id="mix", styling=styling, transition_to=mix_transitions)
+
+fig3.clf()
 
 # We want to use the svg in its previous state to transition inner elements to their new states
 if st.session_state["svgm"] == "":
