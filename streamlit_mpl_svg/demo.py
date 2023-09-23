@@ -12,6 +12,8 @@ if "svgl" not in st.session_state:
     st.session_state["svgl"] = ""
 if "svgm" not in st.session_state:
     st.session_state["svgm"] = ""
+if "svgg" not in st.session_state:
+    st.session_state["svgg"] = ""
 
 with st.sidebar:
     st.write("# Customize Matplotlib SVGs")
@@ -188,20 +190,20 @@ with st.expander("Generated CSS template"):
 
 st.write("## Line Plot")
 line_plot_container = st.container()
-line_mp_value = st.slider("Power", 0.0, 3.0, 2.0, key="line-plot")
+line_mp_value = st.slider("Scale", 0.0, 1.0, 0.5, key="line-plot")
 
 # --------- Matplotlib code ----------
-x = np.linspace(0, 10, 11)
-y = [3.9, 4.4, 10.8, 10.3, 11.2, 13.1, 14.1,  9.9, 13.9, 15.1, 12.5]
+x = np.arange(-10, 11, 1)
+b = 0
 
-# fit a linear curve and estimate its y-values and their error.
-a, b = np.polyfit(x, y, deg=1)
-y_est = a * x**(line_mp_value) + b 
+y = line_mp_value*(x**(2) + b )
+print(y)
 
 fig2, ax2 = plt.subplots()
+ax2.set_xlim(-10, 10)
 ax2.set_ylim(0, 100)
 
-ax2.plot(x, y_est, '-')
+ax2.plot(x, y, '-')
 
 ax2.set_xlabel('x-axis variable')
 ax2.set_ylabel('y-axis variable')
@@ -235,16 +237,16 @@ mix_mp_value = st.slider("Slope", 0.0, 2.0, 2.0, key="mix-plot")
 
 # --------- Matplotlib code ---------
 v = np.linspace(0, 10, 11)
-w = [3.9, 4.4, 10.8, 10.3, 11.2, 13.1, 14.1,  9.9, 13.9, 15.1, 12.5]
+w = np.array([3.9, 4.4, 10.8, 10.3, 11.2, 13.1, 14.1,  9.9, 13.9, 15.1, 12.5])*mix_mp_value
 
 # fit a linear curve and estimate its y-values and their error.
 c, d = np.polyfit(v, w, deg=1)
-w_est = mix_mp_value * v + d
+w_est = c * v + d
 w_err = v.std() * np.sqrt(1/len(v) +
                           (v - v.mean())**2 / np.sum((v - v.mean())**2))
 
 fig3, ax3 = plt.subplots()
-# ax3.set_ylim(0, 25)
+ax3.set_ylim(0, 30)
 ax3.plot(v, w_est, 'o-')
 ax3.fill_between(v, w_est - w_err, w_est + w_err, alpha=0.2)
 ax3.plot(v, w, 'o', color='tab:brown')
@@ -252,8 +254,6 @@ ax3.plot(v, w, 'o', color='tab:brown')
 
 mix_transitions = get_transitions(fig3)
 formatted_mix_plot = svg_plot(fig3, id="mix", styling=styling, transition_to=mix_transitions)
-
-fig3.clf()
 
 # We want to use the svg in its previous state to transition inner elements to their new states
 if st.session_state["svgm"] == "":
@@ -272,3 +272,55 @@ with mix_plot_container:
 
 with st.expander("Generated CSS template"):
     st.code(formatted_mix_plot["css"], language="css")
+
+# st.write("## Bar Group Chart")
+# bar_group_plot_container = st.container()
+# bar_group_mp_value = st.slider("Multiplier", 0.0, 1.0, 1.0, key="bar-group-plot")
+
+# species = ("Adelie", "Chinstrap", "Gentoo")
+# penguin_means = {
+#     'Bill Depth': (18.35, 18.43, 14.98*bar_group_mp_value),
+#     'Bill Length': (38.79, 48.83, 47.50*bar_group_mp_value),
+#     'Flipper Length': (189.95, 195.82, 217.19*bar_group_mp_value),
+# }
+
+# z = np.arange(len(species))  # the label locations
+# width = 0.25  # the width of the bars
+# multiplier = 0
+
+# fig4, ax4 = plt.subplots(layout='constrained')
+
+# for attribute, measurement in penguin_means.items():
+#     offset = width * multiplier
+#     rects = ax4.bar(z + offset, measurement, width, label=attribute)
+#     ax4.bar_label(rects, padding=3)
+#     multiplier += 1
+
+# # Add some text for labels, title and custom x-axis tick labels, etc.
+# ax4.set_ylabel('Length (mm)')
+# ax4.set_title('Penguin attributes by species')
+# ax4.set_xticks(z + width, species)
+# ax4.legend(loc='upper left', ncols=3)
+# ax4.set_ylim(0, 250)
+# # -----------------------------------
+
+# bar_group_transitions = get_transitions(fig4)
+# formatted_bar_group_plot = svg_plot(fig4, id="bar_group", styling=styling, transition_to=bar_group_transitions)
+
+# # We want to use the svg in its previous state to transition inner elements to their new states
+# if st.session_state["svgg"] == "":
+#     last_bar_group_svg = formatted_bar_group_plot["svg"]
+# else:
+#     last_bar_group_svg = st.session_state["svgg"]
+
+# # Update the svg in the session state
+# st.session_state["svgg"] = formatted_bar_group_plot["svg"]
+
+# current_bar_group_css = formatted_bar_group_plot["css"]                           # contains current css transitions and styling
+# new_bar_group_html = "<style>" + current_bar_group_css + "</style>" + last_bar_group_svg    # combine the css and LAST svg
+
+# with bar_group_plot_container:
+#     st.markdown(new_bar_group_html, unsafe_allow_html=True)
+
+# with st.expander("Generated CSS template"):
+#     st.code(formatted_bar_group_plot["css"], language="css")

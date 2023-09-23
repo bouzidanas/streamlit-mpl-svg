@@ -1,4 +1,5 @@
 import io
+import re
 from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
@@ -336,6 +337,8 @@ def css_builder(styles={}, transition_to={}, transition=""):
                     css_plot_area += "\tx: " + value["x"] + ";\n"
                 if "y" in value:
                     css_plot_area += "\ty: " + value["y"] + ";\n"
+                if "transform" in value:
+                    css_plot_area += "\ttransform: " + value["transform"] + ";\n"
                 css_plot_area += "}\n"
                 
     return css_svg_area + css_plot_area + css_plot_border, css_title + css_plot_area_text + css_axes + css_x_axis_label + css_x_axis + css_x_axis_text + css_y_axis_label + css_y_axis + css_y_axis_text + override_axes_css + css_plot_line + css_legend_background + css_legend_text
@@ -492,6 +495,27 @@ def svg_plot(fig, id = None, styling = None, transition_to = None, transition="1
                 transitions["transition-line-" + str(line_index) + "-copy-" + str(copy_index)] = None
         line_index += 1
     
+    plot_texts = svg_soup.select(".figure > .axes > .text")
+    text_index = 1
+    for text in plot_texts:
+        if "id" in text.attrs:
+            text_group = text.find("g")
+            text_group['id'] = text['id'] + "-g_1"
+            if "transform" in text_group.attrs:
+                transitions["plot-text-group-" + str(text_index)] = {"select": '#' + text_group['id']}
+                translate_replacement = re.search(r"translate\(.*?\)", text_group['transform'].strip()).group(0)
+                replacement = re.sub(r'translate\(.*?\)', translate_replacement.split()[0] + "px, " + translate_replacement.split()[1][:-1] + "px)", text_group['transform'].strip())
+                scale_replacement = re.search(r"scale\(.*?\)", replacement.strip()).group(0)
+                replacement = re.sub(r'scale\(.*?\)', scale_replacement.split()[0] + ", " + scale_replacement.split()[1], replacement.strip())
+                if translate_replacement is not None or scale_replacement is not None:
+                    transitions["plot-text-group-" + str(text_index)]["transform"] = replacement
+                else:
+                    transitions["plot-text-group-" + str(text_index)]["transform"] = text_group['transform'].strip()
+                print(transitions["plot-text-group-" + str(text_index)]["transform"])
+            else:
+                transitions["plot-text-group-" + str(text_index)] = None
+        text_index += 1
+
     path_styles_in_defs ="""/* ---------------------------------------------------- */
     /* Original paths of copies */\n\n"""
     class_count = 0
@@ -515,7 +539,7 @@ def svg_plot(fig, id = None, styling = None, transition_to = None, transition="1
     if id is not None:
         svg_element['id'] = id
         combined_css = css_styles + path_styles_in_defs
-        combined_css = combined_css.replace("\n.", "\n#" + id + " .")
+        combined_css = combined_css.replace("\n#", "\n#" + id + " #").replace("\n.", "\n#" + id + " .")
     else:
         combined_css = css_styles + path_styles_in_defs
 
@@ -604,4 +628,23 @@ def get_transitions(fig):
                 transitions["transition-line-" + str(line_index) + "-copy-" + str(copy_index)] = None
         line_index += 1
     
+    plot_texts = svg_soup.select(".figure > .axes > .text")
+    text_index = 1
+    for text in plot_texts:
+        if "id" in text.attrs:
+            text_group = text.find("g")
+            if "transform" in text_group.attrs:
+                transitions["plot-text-group-" + str(text_index)] = {"select": '#' + text['id'] + "-g_1"}
+                translate_replacement = re.search(r"translate\(.*?\)", text_group['transform'].strip()).group(0)
+                replacement = re.sub(r'translate\(.*?\)', translate_replacement.split()[0] + "px, " + translate_replacement.split()[1][:-1] + "px)", text_group['transform'].strip())
+                scale_replacement = re.search(r"scale\(.*?\)", replacement.strip()).group(0)
+                replacement = re.sub(r'scale\(.*?\)', scale_replacement.split()[0] + ", " + scale_replacement.split()[1], replacement.strip())
+                if translate_replacement is not None or scale_replacement is not None:
+                    transitions["plot-text-group-" + str(text_index)]["transform"] = replacement
+                else:
+                    transitions["plot-text-group-" + str(text_index)]["transform"] = text_group['transform'].strip()
+            else:
+                transitions["plot-text-group-" + str(text_index)] = None
+        text_index += 1
+
     return transitions
